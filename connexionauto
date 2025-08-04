@@ -1,0 +1,33 @@
+# Ce script va créé un utilisateur qui va se connecté automatiquement, ce script doublé de l'activation de l'auto power on dans la BIOS assure que le PC pourra afficher la page voulue le plus souvent sans plus de maintenance
+
+
+# Variables
+$userName = "admin"
+$password = "password"
+
+# Créer un utilisateur standard s'il n'existe pas
+$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+if (-Not (Get-LocalUser -Name $userName -ErrorAction SilentlyContinue)) {
+   New-LocalUser $userName -Password $securePassword -FullName "Utilisateur Horloge" -Description "Compte utilisateur sans droits administratifs"
+   Add-LocalGroupMember -Group "Utilisateurs" -Member $userName
+} else {
+   Write-Host "L'utilisateur $userName existe déjà. Saut de la création de l'utilisateur."
+}
+
+# Configurer la connexion automatique
+# Cette partie nécessite la modification du registre
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+Set-ItemProperty -Path $regPath -Name "DefaultUserName" -Value $userName
+Set-ItemProperty -Path $regPath -Name "DefaultPassword" -Value $password
+Set-ItemProperty -Path $regPath -Name "AutoAdminLogon" -Value "1"
+
+# Configurer les options d'alimentation pour empêcher la mise en veille et l'extinction de l'écran
+powercfg -change -monitor-timeout-ac 0
+powercfg -change -monitor-timeout-dc 0
+powercfg -change -standby-timeout-ac 0
+powercfg -change -standby-timeout-dc 0
+powercfg -change -hibernate-timeout-ac 0
+powercfg -change -hibernate-timeout-dc 0
+
+# Vérification finale
+Write-Host "Configuration terminée. Redémarrez le PC pour appliquer les modifications."
