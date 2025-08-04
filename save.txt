@@ -1,0 +1,36 @@
+# Activation sauvegarde automatique sur les postes des clients
+
+
+# Nom de la GPO
+$GpoName = "Windows Updates"
+$ou = "OU=USERS,DC=ILO"
+
+# Créer la GPO si elle n'existe pas
+if (-not (Get-GPO -Name $GpoName -ErrorAction SilentlyContinue)) {
+    New-GPO -Name $GpoName
+}
+
+# Lier la GPO à l’OU
+New-GPLink -Name $GpoName -Target $ou
+
+# Configurer les paramètres de Windows Update
+Set-GPRegistryValue -Name $GpoName -Key "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+ -ValueName "AUOptions" -Type DWord -Value 4
+
+Set-GPRegistryValue -Name $GpoName -Key "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+ -ValueName "NoAutoRebootWithLoggedOnUsers" -Type DWord -Value 1
+
+
+
+
+
+
+# Sauvegarde automatique sur linux pour les MSPR
+
+#!/bin/bash
+
+# Met à jour la liste des paquets et les installe
+apt update && apt upgrade -y
+
+# Nettoyage des paquets inutiles
+apt autoremove -y
