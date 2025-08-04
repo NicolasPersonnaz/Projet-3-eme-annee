@@ -4,8 +4,10 @@ from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 import time
 
+# script pour faire en sorte de se connecter à la page web de surveillance de l'entreprise
+
 # Chemin vers msedgedriver
-edge_driver_path = r"C:\Users\Nicolas\OneDrive - IT-LOG-ONE\Documents\selenium\edgedriver_win64\msedgedriver.exe"
+edge_driver_path = r"C:\Users\Nicolas\msedgedriver.exe"
 
 # Service et options Edge
 service = Service(executable_path=edge_driver_path)
@@ -16,7 +18,7 @@ options = Options()
 driver = webdriver.Edge(service=service, options=options)
 
 # Aller à la page de login
-login_url = "https://monitoring.it-log-one.fr/"  # ← Remplace avec l'URL réelle
+login_url = "https://test.fr"  
 driver.get(login_url)
 time.sleep(3)  # Attente pour que la page charge
 
@@ -25,7 +27,7 @@ username_input = driver.find_element(By.ID, "id3d81b718-e0e9-4926-88ec-79110d643
 password_input = driver.find_element(By.ID, "id354ecfde-0418-40b4-943c-8e0944167f48")
 
 username_input.send_keys("admin")
-password_input.send_keys("Ilosecu2025+")
+password_input.send_keys("password")
 time.sleep(1)
 
 # Cliquer sur le bouton de connexion
@@ -37,3 +39,4 @@ time.sleep(10)
 
 # Fermer le navigateur
 driver.quit()
+
