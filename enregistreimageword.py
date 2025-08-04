@@ -1,6 +1,6 @@
 import os
 from docx import Document
-
+# Ce code a pour but d'enregistrer toute les images d'un document word en demandant à l'utilisateur ou enregistrer les images et quel nom leur donner
 def extract_images_from_word(word_file, output_folder, base_name):
     # Vérifiez si le fichier Word existe
     if not os.path.exists(word_file):
@@ -50,4 +50,5 @@ if __name__ == "__main__":
     base_name = input("Quel nom de base veux-tu utiliser pour les fichiers d'image : ")
 
     # Extraction des images
+
     extract_images_from_word(word_file, output_folder, base_name)
