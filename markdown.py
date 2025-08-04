@@ -1,5 +1,7 @@
 from fpdf import FPDF
 
+# Le script à pour but d'exporter les pages wiki en markdown en PDF
+
 # Contenu Markdown exemple
 markdown_content = """
 # Introduction
@@ -131,5 +133,6 @@ pdf.chapter_body(markdown_content)
 
 # Sauvegarder le PDF
 pdf.output("yet.pdf", "F")
+
 
 print("Le fichier PDF a été créé avec succès.")
